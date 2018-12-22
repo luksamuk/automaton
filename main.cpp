@@ -181,6 +181,10 @@ handle_args(int argc, char** argv)
                 
                       << "Runtime GUI commands:" << std::endl
                       << "\tc                \tClear the grid" << std::endl
+                      << "\t-                \tDecrease iteration speed"
+                      << std::endl
+                      << "\t=                \tIncrease iteration speed"
+                      << std::endl
                       << "\tLeft mouse button\t"
                       << "Excite highlighted cell" << std::endl
                       << "\tRight mouse button\t"

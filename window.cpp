@@ -43,12 +43,13 @@ struct window_info_t {
     double      width;
     double      height;
     double      last_swap;
+    double      refresh_interval;
 };
 
 
 /* Instâncias das estruturas acima, inacessíveis em outros arquivos */
 static user_input_t  input  = {};
-static window_info_t window = { NULL, 640.0, 640.0, 0.0 };
+static window_info_t window = { NULL, 640.0, 640.0, 0.0, 0.025 };
 
 
 /* ========================================================================== */
@@ -174,7 +175,7 @@ automata_gui_update()
     if(!input.paused) {
         double current_time = glfwGetTime();
 
-        if(current_time - window.last_swap >= WINDOW_REFRESH_INTERVAL) {
+        if(current_time - window.last_swap >= window.refresh_interval) {
             window.last_swap = current_time;
 
             // Aplica as regras no autômato
@@ -289,6 +290,19 @@ keyboard_callback(GLFWwindow* ptr, int key, int scancod, int action, int mod)
         // Pressionar 'c' limpa o autômato
         if(action == GLFW_PRESS) {
             input.cleanup = true;
+        }
+        break;
+    // Aumentando e diminuindo a velocidade de evolução do autômato
+    case GLFW_KEY_MINUS:
+        if(action == GLFW_PRESS) {
+            window.refresh_interval += 0.025;
+        }
+        break;
+    case GLFW_KEY_EQUAL:
+        if(action == GLFW_PRESS) {
+            window.refresh_interval -= 0.025;
+            window.refresh_interval =
+                (window.refresh_interval < 0.0 ? 0.0 : window.refresh_interval);
         }
         break;
     default: break;
